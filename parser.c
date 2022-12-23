@@ -13,19 +13,17 @@ Expr *newExpr(int line, ExprType type) {
 }
 
 Expr *term(Scanner *scanner) {
-  Expr *exp = literal(scanner);
-  Token op;
-  exp = literal(scanner);
+  Expr *exp = primary(scanner);
   while(match(scanner, PLUS)) {
-    exp = newBinary(exp, literal(scanner), '+', scanner->line);
+    exp = newBinary(exp, primary(scanner), '+', scanner->line);
   }
-
   return exp;
 }
 
-Expr *literal(Scanner *scanner) {
-  int length = (int)(scanner->lookahead - scanner->current);
-  Expr *exp = newLiteral(scanner->current, length, scanner->line);
+Expr *primary(Scanner *scanner) {
+  // For now only numbers
+  Token token = nextToken(scanner);
+  Expr *exp = newNumberLiteral(&token);
   return exp;
 }
 
@@ -38,10 +36,9 @@ Expr *newBinary(Expr *left, Expr *right, char op, int line) {
   return exp;
 }
 
-Expr *newLiteral(char *value, int length, int line) {
-  Expr *exp = newExpr(line, LITERAL);
-  exp->as.literal.value = value;
-  exp->as.literal.length = length;
+Expr *newNumberLiteral(Token *token) {
+  Expr *exp = newExpr(token->line, NUMBER_LITERAL);
+  exp->as.numberLiteral.number = strtod(token->lexeme, NULL);
   return exp;
 }
 

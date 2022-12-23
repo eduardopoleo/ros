@@ -10,7 +10,7 @@ typedef enum TokenType {
 
 typedef struct Token {
   TokenType type;
-  char *start;
+  char *lexeme;
   int length;
   int line;
 } Token;
