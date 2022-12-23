@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "scanner.h"
 #include "token.h"
 
@@ -31,4 +32,23 @@ Token nextToken(Scanner *scanner) {
   scanner->lookahead++;
   // Move the pointer 1 place forward to get the next token
   return token;
+}
+
+int atEnd(Scanner *scanner) {
+  if (scanner->current[0] == EOF || scanner->current[0] == '\0') {
+    return 1;
+  }
+
+  return 0;
+}
+
+int match(Scanner *scanner, TokenType type) {
+  Token token = nextToken(scanner);
+  if (token.type == type) {
+    scanner->current++;
+    scanner->lookahead++;
+    return 1;
+  }
+
+  return 0;
 }

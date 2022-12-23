@@ -12,5 +12,7 @@ typedef struct Scanner {
 
 void initScanner(Scanner *scanner, char *code);
 Token nextToken(Scanner *scanner);
+int atEnd(Scanner *scanner);
+int match(Scanner *scanner, TokenType type);
 
 #endif
