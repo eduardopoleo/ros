@@ -14,7 +14,7 @@ Expr *newExpr(int line, ExprType type) {
 
 Expr *term(Scanner *scanner) {
   Expr *exp = primary(scanner);
-  while(match(scanner, PLUS)) {
+  while(match(scanner, '+')) {
     exp = newBinary(exp, primary(scanner), '+', scanner->line);
   }
   return exp;

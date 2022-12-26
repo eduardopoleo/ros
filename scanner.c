@@ -46,9 +46,8 @@ int atEnd(Scanner *scanner) {
   return 0;
 }
 
-int match(Scanner *scanner, TokenType type) {
-  Token token = peek(scanner);
-  if (token.type == type) {
+int match(Scanner *scanner, char character) {
+  if (scanner->current[0] == character) {
     advance(scanner);
     return 1;
   }

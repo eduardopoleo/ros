@@ -15,7 +15,7 @@ Token newToken(TokenType type, int line, int length, char *lexeme);
 Token nextToken(Scanner *scanner);
 Token peek(Scanner *scanner);
 int atEnd(Scanner *scanner);
-int match(Scanner *scanner, TokenType type);
+int match(Scanner *scanner, char character);
 void advance(Scanner *scanner);
 void printCurrentChar(Scanner *scanner, char *message);
 
