@@ -19,21 +19,17 @@ Token newToken(TokenType type, int line, int length, char *lexeme) {
   return token;
 }
 
-Token peek(Scanner *scanner) {
+Token nextToken(Scanner *scanner) {
   char current_char = scanner->current[0];
   int length = (int)(scanner->lookahead - scanner->current);
   Token token;
+
   if (current_char == '+') {
     token = newToken(PLUS, scanner->line, length, scanner->current);
   } else {
     token = newToken(NUMBER, scanner->line, length, scanner->current);
   }
 
-  return token;
-}
-
-Token nextToken(Scanner *scanner) {
-  Token token = peek(scanner);
   advance(scanner);
   return token;
 }
