@@ -14,8 +14,9 @@ Expr *newExpr(int line, ExprType type) {
 
 Expr *term(Scanner *scanner) {
   Expr *exp = primary(scanner);
-  while(match(scanner, '+')) {
-    exp = newBinary(exp, primary(scanner), '+', scanner->line);
+  Token token;
+  while(match(scanner, '+') || match(scanner, '-')) {
+    exp = newBinary(exp, primary(scanner), scanner->peek->lexeme[0], scanner->line);
   }
   return exp;
 }

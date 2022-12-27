@@ -7,6 +7,7 @@
 typedef struct Scanner {
   char *current;
   char *lookahead;
+  Token *peek;
   int line;
 } Scanner;
 

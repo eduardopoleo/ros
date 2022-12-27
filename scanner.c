@@ -30,6 +30,7 @@ Token nextToken(Scanner *scanner) {
     token = newToken(NUMBER, scanner->line, length, scanner->current);
   }
 
+  scanner->peek = &token;
   advance(scanner);
   return token;
 }
