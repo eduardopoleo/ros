@@ -30,7 +30,6 @@ Expr *primary(Scanner *scanner) {
 }
 
 Expr *newBinary(Expr *left, Expr *right, char op, int line) {
-  printf("operation in parser %c\n", op);
   Expr *exp = newExpr(line, BINARY);
   exp->as.binary.left = left;
   exp->as.binary.right = right;

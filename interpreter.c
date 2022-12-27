@@ -18,7 +18,6 @@ double visitNumberLiteral(Expr *exp) {
 }
 
 double visitBinary(Expr *exp) {
-  printf("operation: %c\n", exp->as.binary.op);
   switch (exp->as.binary.op) {
     case '+':
       return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
