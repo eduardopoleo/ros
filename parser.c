@@ -13,7 +13,6 @@ Expr *newExpr(int line, ExprType type) {
 }
 
 Expr *term(Scanner *scanner) {
-  printf("hello %c\n", scanner->peek->lexeme[0]);
   Expr *exp = primary(scanner);
   Token token;
   while(match(scanner, '+') || match(scanner, '-')) {

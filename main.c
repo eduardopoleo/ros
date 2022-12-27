@@ -6,15 +6,22 @@
 
 /*
   Feature list:
-  Stage
+  Stage 1:
   - Multi digit numbers
-  - Space in numbers
+  - Blank spaces
   - Comments
-  - Process file
+  - ReadFile
   - Multiplication
   - Division
   - Module
+  Stage 2:
   - variables 
+  - functions
+  - closures (blocks)
+  Stage 3:
+  - arrays
+  - hashes
+  - classes (optional)
 */
 int main(int argc, char *argv[]) {
   char *buffer = "1+5-6+3-8-9+0-7+5-3+5\0";
