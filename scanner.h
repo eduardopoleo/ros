@@ -5,8 +5,8 @@
 #include "token.h"
 
 typedef struct Scanner {
+  char *start;
   char *current;
-  char *lookahead;
   Token *peek;
   int line;
 } Scanner;

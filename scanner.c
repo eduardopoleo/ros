@@ -4,8 +4,8 @@
 #include "token.h"
 
 void initScanner(Scanner *scanner, char *code) {
-  scanner->current = code;
-  scanner->lookahead = code + 1 ;
+  scanner->start = code;
+  scanner->current = code + 1 ;
   scanner->line = 1;
 }
 
@@ -27,7 +27,7 @@ Token nextToken(Scanner *scanner) {
 }
 
 int atEnd(Scanner *scanner) {
-  if (scanner->current[0] == EOF || scanner->current[0] == '\0') {
+  if (scanner->start[0] == EOF || scanner->start[0] == '\0') {
     return 1;
   }
 
@@ -36,24 +36,24 @@ int atEnd(Scanner *scanner) {
 
 Token calculateToken(Scanner *scanner) {
   Token token;
-  int length = (int)(scanner->lookahead - scanner->current);
+  int length = (int)(scanner->current - scanner->start);
 
-  switch (scanner->current[0]) {
+  switch (scanner->start[0]) {
     case '+':
-      token = newToken(PLUS, scanner->line, length, scanner->current);
+      token = newToken(PLUS, scanner->line, length, scanner->start);
       break;
     case '-':
-      token = newToken(MINUS, scanner->line, length, scanner->current);
+      token = newToken(MINUS, scanner->line, length, scanner->start);
       break;
     default:
-      token = newToken(NUMBER, scanner->line, length, scanner->current);
+      token = newToken(NUMBER, scanner->line, length, scanner->start);
       break;
   }
   return token;
 }
 
 int match(Scanner *scanner, char character) {
-  if (scanner->current[0] == character) {
+  if (scanner->start[0] == character) {
     Token token = calculateToken(scanner);
     scanner->peek = &token;
     advance(scanner);
@@ -64,10 +64,10 @@ int match(Scanner *scanner, char character) {
 }
 
 void advance(Scanner *scanner) {
+  scanner->start++;
   scanner->current++;
-  scanner->lookahead++;
 }
 
 void printCurrentChar(Scanner *scanner, char *message) {
-  printf("%s: %c\n", message, scanner->current[0]);
+  printf("%s: %c\n", message, scanner->start[0]);
 }
