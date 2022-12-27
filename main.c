@@ -14,6 +14,7 @@
   - Multiplication
   - Division
   - Module
+  - Free ast
   Stage 2:
   - variables 
   - functions
@@ -24,7 +25,7 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
-  char *buffer = "1+5-6+3-8-9+0-7+5-3+5\0";
+  char *buffer = "1+5\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);

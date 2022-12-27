@@ -16,12 +16,12 @@ Expr *term(Scanner *scanner) {
   Expr *exp = primary(scanner);
   Token token;
   while(match(scanner, '+') || match(scanner, '-')) {
-    char op = scanner->peek->lexeme[0];    
+    char op = scanner->peek->lexeme[0];
     exp = newBinary(exp, primary(scanner), op, scanner->line);
   }
   return exp;
 }
-
+// 1+5
 Expr *primary(Scanner *scanner) {
   // For now only numbers
   Token token = nextToken(scanner);
@@ -47,6 +47,7 @@ Expr *newNumberLiteral(Token *token) {
 Expr *parse(Scanner *scanner) {
   Token token;
   Expr *exp;
+  // TODO: pay attention to this when we have multi line statements.
   while(!atEnd(scanner)) {
     exp = term(scanner);
   }
