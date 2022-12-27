@@ -20,16 +20,7 @@ Token newToken(TokenType type, int line, int length, char *lexeme) {
 }
 
 Token nextToken(Scanner *scanner) {
-  char current_char = scanner->current[0];
-  int length = (int)(scanner->lookahead - scanner->current);
-  Token token;
-
-  if (current_char == '+') {
-    token = newToken(PLUS, scanner->line, length, scanner->current);
-  } else {
-    token = newToken(NUMBER, scanner->line, length, scanner->current);
-  }
-
+  Token token = calculateToken(scanner);
   scanner->peek = &token;
   advance(scanner);
   return token;
@@ -43,8 +34,28 @@ int atEnd(Scanner *scanner) {
   return 0;
 }
 
+Token calculateToken(Scanner *scanner) {
+  Token token;
+  int length = (int)(scanner->lookahead - scanner->current);
+
+  switch (scanner->current[0]) {
+    case '+':
+      token = newToken(PLUS, scanner->line, length, scanner->current);
+      break;
+    case '-':
+      token = newToken(MINUS, scanner->line, length, scanner->current);
+      break;
+    default:
+      token = newToken(NUMBER, scanner->line, length, scanner->current);
+      break;
+  }
+  return token;
+}
+
 int match(Scanner *scanner, char character) {
   if (scanner->current[0] == character) {
+    Token token = calculateToken(scanner);
+    scanner->peek = &token;
     advance(scanner);
     return 1;
   }

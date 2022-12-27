@@ -5,7 +5,7 @@
 #include "interpreter.h"
 
 int main(int argc, char *argv[]) {
-  char *buffer = "6+5+4\0";
+  char *buffer = "5-3+6\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);

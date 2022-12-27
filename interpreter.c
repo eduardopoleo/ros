@@ -7,7 +7,7 @@
 double interpret(Expr *exp) {
   switch (exp->type) {
     case BINARY:
-      return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
+      return visitBinary(exp);
     case NUMBER_LITERAL:
       return visitNumberLiteral(exp);
   }
@@ -18,8 +18,11 @@ double visitNumberLiteral(Expr *exp) {
 }
 
 double visitBinary(Expr *exp) {
+  printf("operation: %c\n", exp->as.binary.op);
   switch (exp->as.binary.op) {
     case '+':
       return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
+    case '-':
+      return interpret(exp->as.binary.left) - interpret(exp->as.binary.right);
   }
 }

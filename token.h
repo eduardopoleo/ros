@@ -5,6 +5,7 @@
 
 typedef enum TokenType {
   PLUS,
+  MINUS,
   NUMBER
 } TokenType;
 

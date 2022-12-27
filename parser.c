@@ -16,7 +16,8 @@ Expr *term(Scanner *scanner) {
   Expr *exp = primary(scanner);
   Token token;
   while(match(scanner, '+') || match(scanner, '-')) {
-    exp = newBinary(exp, primary(scanner), scanner->peek->lexeme[0], scanner->line);
+    char op = scanner->peek->lexeme[0];    
+    exp = newBinary(exp, primary(scanner), op, scanner->line);
   }
   return exp;
 }
@@ -29,6 +30,7 @@ Expr *primary(Scanner *scanner) {
 }
 
 Expr *newBinary(Expr *left, Expr *right, char op, int line) {
+  printf("operation in parser %c\n", op);
   Expr *exp = newExpr(line, BINARY);
   exp->as.binary.left = left;
   exp->as.binary.right = right;
