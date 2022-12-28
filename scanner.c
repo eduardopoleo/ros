@@ -47,6 +47,15 @@ Token calculateToken(Scanner *scanner) {
     case '-':
       token = newToken(MINUS, scanner->line, 1, scanner->start);
       break;
+    case '*':
+      token = newToken(STAR, scanner->line, 1, scanner->start);
+      break;
+    case '/':
+      token = newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
+      break;
+    case '%':
+      token = newToken(MODULO, scanner->line, 1, scanner->start);
+      break;
   }
 
   if(isNumber(startChar)) {

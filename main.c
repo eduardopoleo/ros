@@ -8,13 +8,15 @@
   Feature list:
   Stage 1:
   - [x] Multi digit numbers
-  - Floating Point support
-  - ReadFile
-  - Blank spaces
-  - Comments
+  - [x] Floating Point support
   - Multiplication
   - Division
   - Module
+  - ReadFile
+  - Blank spaces
+  - Comments
+  - Multi line statement
+  - puts
   - Free ast
   Stage 2:
   - variables 
@@ -26,7 +28,7 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
-  char *buffer = "56.7+24.34-784.756+344.89\0";
+  char *buffer = "8-3+71.8*5+14%5\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);

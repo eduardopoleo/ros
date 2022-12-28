@@ -6,7 +6,10 @@
 typedef enum TokenType {
   PLUS,
   MINUS,
-  NUMBER
+  NUMBER,
+  STAR,
+  FORWARD_SLASH,
+  MODULO
 } TokenType;
 
 typedef struct Token {

@@ -23,5 +23,11 @@ double visitBinary(Expr *exp) {
       return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
     case '-':
       return interpret(exp->as.binary.left) - interpret(exp->as.binary.right);
+    case '*':
+      return interpret(exp->as.binary.left) * interpret(exp->as.binary.right);
+    case '/':
+      return interpret(exp->as.binary.left) / interpret(exp->as.binary.right);
+    case '%':
+      return (int)interpret(exp->as.binary.left) % (int)interpret(exp->as.binary.right);
   }
 }

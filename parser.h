@@ -27,6 +27,7 @@ typedef struct Expr {
 
 Expr *parse(Scanner *scanner);
 Expr *term(Scanner *scanner);
+Expr *factor(Scanner *scanner);
 Expr *primary(Scanner *scanner);
 Expr *newExpr(int line, ExprType type);
 Expr *newBinary(Expr *left, Expr *right, char op, int line);

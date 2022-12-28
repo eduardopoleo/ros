@@ -12,16 +12,30 @@ Expr *newExpr(int line, ExprType type) {
   return exp;
 }
 
+// term -> factor ((+|-) factor)*
 Expr *term(Scanner *scanner) {
-  Expr *exp = primary(scanner);
+  Expr *exp = factor(scanner);
   Token token;
   while(match(scanner, '+') || match(scanner, '-')) {
     char op = scanner->peek->lexeme[0];
-    exp = newBinary(exp, primary(scanner), op, scanner->line);
+    exp = newBinary(exp, factor(scanner), op, scanner->line);
   }
   return exp;
 }
-// 1+5
+
+// factor -> primary ((*|/|%) primary)*
+Expr *factor(Scanner *scanner) {
+  Expr *exp = primary(scanner);
+  Token token;
+  while(match(scanner, '*') || match(scanner, '/') || match(scanner, '%')) {
+    char op = scanner->peek->lexeme[0];
+    exp = newBinary(exp, primary(scanner), op, scanner->line);
+  }
+
+  return exp;
+}
+
+// primary -> NUMBER
 Expr *primary(Scanner *scanner) {
   // For now only numbers
   Token token = nextToken(scanner);
