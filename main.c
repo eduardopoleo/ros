@@ -8,9 +8,10 @@
   Feature list:
   Stage 1:
   - [x] Multi digit numbers
+  - Floating Point support
+  - ReadFile
   - Blank spaces
   - Comments
-  - ReadFile
   - Multiplication
   - Division
   - Module
@@ -25,7 +26,7 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
-  char *buffer = "1000+5-160+432\0";
+  char *buffer = "56.7+24.34-784.756+344.89\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);

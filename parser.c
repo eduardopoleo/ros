@@ -40,7 +40,8 @@ Expr *newBinary(Expr *left, Expr *right, char op, int line) {
 
 Expr *newNumberLiteral(Token *token) {
   Expr *exp = newExpr(token->line, NUMBER_LITERAL);
-  exp->as.numberLiteral.number = strtod(token->lexeme, NULL);
+  double number = strtod(token->lexeme, NULL);
+  exp->as.numberLiteral.number = number;
   return exp;
 }
 

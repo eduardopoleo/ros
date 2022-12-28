@@ -60,8 +60,13 @@ Token calculateToken(Scanner *scanner) {
 }
 
 void captureFullNumber(Scanner *scanner) {
-  while(isNumber(scanner->current[0])) {
+  // Current could be a . if we have 1 digit e.g 1.5
+  while(isNumber(scanner->current[0]) || scanner->current[0] == '.') {
     advance(scanner);
+    // If we land into a . we can to keep iterating to gather all the decimal points
+    if(scanner->current[0] == '.') {
+      advance(scanner);
+    }
   }
 }
 
