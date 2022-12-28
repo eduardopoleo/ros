@@ -7,7 +7,7 @@
 /*
   Feature list:
   Stage 1:
-  - Multi digit numbers
+  - [x] Multi digit numbers
   - Blank spaces
   - Comments
   - ReadFile
@@ -25,7 +25,7 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
-  char *buffer = "1+5\0";
+  char *buffer = "1000+5-160+432\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);

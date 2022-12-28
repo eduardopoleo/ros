@@ -2,6 +2,7 @@
 #include <string.h>
 #include "scanner.h"
 #include "token.h"
+#include <stdbool.h>
 
 void initScanner(Scanner *scanner, char *code) {
   scanner->start = code;
@@ -25,32 +26,51 @@ Token nextToken(Scanner *scanner) {
   return token;
 }
 
-int atEnd(Scanner *scanner) {
+bool atEnd(Scanner *scanner) {
   if (scanner->current[0] == EOF || scanner->current[0] == '\0') {
-    return 1;
+    return true;
   }
 
-  return 0;
+  return false;
 }
 
 Token calculateToken(Scanner *scanner) {
   scanner->start = scanner->current;
   advance(scanner);
   Token token;
-  int length = (int)(scanner->current - scanner->start);
-  printf("start %c\n", scanner->start[0]);
-  switch (scanner->start[0]) {
+  char startChar = scanner->start[0];
+  printf("start %c\n", startChar);
+  switch (startChar) {
     case '+':
       token = newToken(PLUS, scanner->line, 1, scanner->start);
       break;
     case '-':
       token = newToken(MINUS, scanner->line, 1, scanner->start);
       break;
-    default:
-      token = newToken(NUMBER, scanner->line, length, scanner->start);
-      break;
   }
+
+  if(isNumber(startChar)) {
+    captureFullNumber(scanner);
+  }
+
+  int length = (int)(scanner->current - scanner->start);
+  token = newToken(NUMBER, scanner->line, length, scanner->start);
+
   return token;
+}
+
+void captureFullNumber(Scanner *scanner) {
+  while(isNumber(scanner->current[0])) {
+    advance(scanner);
+  }
+}
+
+bool isNumber(char c) {
+  if(c >= '0' && c <= '9') {
+    return true;
+  }
+
+  return false;
 }
 
 int match(Scanner *scanner, char character) {
