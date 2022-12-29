@@ -15,7 +15,6 @@ Expr *newExpr(int line, ExprType type) {
 // term -> factor ((+|-) factor)*
 Expr *term(Scanner *scanner) {
   Expr *exp = factor(scanner);
-  Token token;
   while(match(scanner, '+') || match(scanner, '-')) {
     char op = scanner->peek->lexeme[0];
     exp = newBinary(exp, factor(scanner), op, scanner->line);
@@ -26,7 +25,6 @@ Expr *term(Scanner *scanner) {
 // factor -> primary ((*|/|%) primary)*
 Expr *factor(Scanner *scanner) {
   Expr *exp = primary(scanner);
-  Token token;
   while(match(scanner, '*') || match(scanner, '/') || match(scanner, '%')) {
     char op = scanner->peek->lexeme[0];
     exp = newBinary(exp, primary(scanner), op, scanner->line);
@@ -60,7 +58,6 @@ Expr *newNumberLiteral(Token *token) {
 }
 
 Expr *parse(Scanner *scanner) {
-  Token token;
   Expr *exp;
   // TODO: pay attention to this when we have multi line statements.
   while(!atEnd(scanner)) {

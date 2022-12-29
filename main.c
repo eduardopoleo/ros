@@ -3,19 +3,22 @@
 #include "token.h"
 #include "parser.h"
 #include "interpreter.h"
+#include "file.h"
 
 /*
   Feature list:
   Stage 1:
   - [x] Multi digit numbers
   - [x] Floating Point support
-  - Multiplication
-  - Division
-  - Module
+  - [x] Multiplication
+  - [x] Division
+  - [x] Module
   - ReadFile
   - Blank spaces
-  - Comments
   - Multi line statement
+  - Comments
+  - Strings
+  - String interpolation ?
   - puts
   - Free ast
   Stage 2:
@@ -28,6 +31,7 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
+  // "8-3+71.8*5+14%5\0"
   char *buffer = "8-3+71.8*5+14%5\0";
   Scanner scanner;
   initScanner(&scanner, buffer);
