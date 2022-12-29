@@ -32,7 +32,7 @@
 */
 int main(int argc, char *argv[]) {
   // "8-3+71.8*5+14%5\0"
-  char *buffer = "8-3+71.8*5+14%5\0";
+  char *buffer = readFile(argv[1]);
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);
