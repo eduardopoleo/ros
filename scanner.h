@@ -23,7 +23,6 @@ bool atEnd(Scanner *scanner);
 bool match(Scanner *scanner, TokenType type);
 bool isNumber(char c);
 void captureFullNumber(Scanner *scanner);
-void advance(Scanner *scanner);
 void printCurrentChar(Scanner *scanner, char *message);
 
 #endif

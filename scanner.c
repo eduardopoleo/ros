@@ -37,7 +37,7 @@ Token advanceToken(Scanner *scanner) {
 }
 
 bool atEnd(Scanner *scanner) {
-  if (scanner->current[0] == EOF || scanner->current[0] == '\0') {
+  if (scanner->start[0] == EOF || scanner->start[0] == '\0') {
     return true;
   }
 
@@ -45,30 +45,40 @@ bool atEnd(Scanner *scanner) {
 }
 
 Token calculateToken(Scanner *scanner) {
-  scanner->start = scanner->current;
-  advance(scanner);
   while(isWhiteSpace(scanner->start[0])) {
     scanner->line++;
-    scanner->start = scanner->current;
-    advance(scanner);
+    scanner->start++;
   }
 
+  scanner->current = scanner->start + 1;
   char startChar = scanner->start[0];
-
+  Token token;
   printf("start %c\n", startChar);
   switch (startChar) {
     case '+':
-      return newToken(PLUS, scanner->line, 1, scanner->start);
+      token = newToken(PLUS, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
     case '-':
-      return newToken(MINUS, scanner->line, 1, scanner->start);
+      token = newToken(MINUS, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
     case '*':
-      return newToken(STAR, scanner->line, 1, scanner->start);
+      token = newToken(STAR, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
     case '/':
-      return newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
+      token = newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
     case '%':
-      return newToken(MODULO, scanner->line, 1, scanner->start);
+      token = newToken(MODULO, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
     case '\0':
-      return newToken(END_OF_FILE, scanner->line, 1, scanner->start);
+      token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
+      scanner->start = scanner->current;
+      return token;
   }
 
   if(isNumber(startChar)) {
@@ -76,18 +86,19 @@ Token calculateToken(Scanner *scanner) {
   }
 
   int length = (int)(scanner->current - scanner->start);
-  Token token = newToken(NUMBER, scanner->line, length, scanner->start);
+  token = newToken(NUMBER, scanner->line, length, scanner->start);
 
+  scanner->start = scanner->current;
   return token;
 }
 
 void captureFullNumber(Scanner *scanner) {
   // Current could be a . if we have 1 digit e.g 1.5
   while(isNumber(scanner->current[0]) || scanner->current[0] == '.') {
-    advance(scanner);
+    scanner->current++;
     // If we land into a . we can to keep iterating to gather all the decimal points
     if(scanner->current[0] == '.') {
-      advance(scanner);
+      scanner->current++;
     }
   }
 }
@@ -115,10 +126,6 @@ bool match(Scanner *scanner, TokenType type) {
   }
 
   return false;
-}
-
-void advance(Scanner *scanner) {
-  scanner->current++;
 }
 
 void printCurrentChar(Scanner *scanner, char *message) {
