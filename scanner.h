@@ -17,7 +17,7 @@ Token newToken(TokenType type, int line, int length, char *lexeme);
 Token nextToken(Scanner *scanner);
 Token calculateToken(Scanner *scanner);
 bool atEnd(Scanner *scanner);
-int match(Scanner *scanner, char character);
+bool match(Scanner *scanner, char character);
 bool isNumber(char c);
 void captureFullNumber(Scanner *scanner);
 void advance(Scanner *scanner);
