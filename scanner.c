@@ -56,11 +56,17 @@ Token calculateToken(Scanner *scanner) {
   }
 
   // handles single line comments
-  while(scanner->start[0] == '#') {
+  if(scanner->start[0] == '#') {
     while(scanner->start[0] != '\n' && !atEnd(scanner)) {
       scanner->start++;
     }
     scanner->line++;
+    /*
+      After we're out of a comments we need to re check all the other
+      previous conditions again. This is not efficient but it's the
+      easisets way to get it done.
+    */
+    return calculateToken(scanner);
   }
 
   scanner->current = scanner->start + 1;
@@ -98,7 +104,6 @@ Token calculateToken(Scanner *scanner) {
   if (!atEnd(scanner)) {
     scanner->start = scanner->current;
   }
-
   return token;
 }
 
