@@ -4,13 +4,13 @@
 #include <stdio.h>
 
 typedef enum TokenType {
-  PLUS,
-  MINUS,
-  NUMBER,
-  STAR,
-  FORWARD_SLASH,
-  MODULO,
-  END_OF_FILE
+  PLUS, // 0
+  MINUS, // 1
+  NUMBER, // 2
+  STAR, // 3
+  FORWARD_SLASH, // 4
+  MODULO, // 5
+  END_OF_FILE // 6
 } TokenType;
 
 typedef struct Token {

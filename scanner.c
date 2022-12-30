@@ -70,36 +70,29 @@ Token calculateToken(Scanner *scanner) {
   switch (startChar) {
     case '+':
       token = newToken(PLUS, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
     case '-':
       token = newToken(MINUS, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
     case '*':
       token = newToken(STAR, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
     case '/':
       token = newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
     case '%':
       token = newToken(MODULO, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
     case '\0':
       token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
-      scanner->start = scanner->current;
-      return token;
+      break;
   }
 
   if(isNumber(startChar)) {
     captureFullNumber(scanner);
+    int length = (int)(scanner->current - scanner->start);
+    token = newToken(NUMBER, scanner->line, length, scanner->start);
   }
-
-  int length = (int)(scanner->current - scanner->start);
-  token = newToken(NUMBER, scanner->line, length, scanner->start);
 
   scanner->start = scanner->current;
   return token;

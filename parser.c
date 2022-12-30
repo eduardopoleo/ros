@@ -7,6 +7,7 @@ Expr *parse(Scanner *scanner) {
   Expr *exp;
   // TODO: pay attention to this when we have multi line statements.
   while(!atEnd(scanner)) {
+    printf("in loop\n");
     exp = term(scanner);
   }
 
