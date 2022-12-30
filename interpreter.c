@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "interpreter.h"
+#include "token.h"
 #include "parser.h"
 #include "stdlib.h"
 #include "string.h"
@@ -19,15 +20,15 @@ double visitNumberLiteral(Expr *exp) {
 
 double visitBinary(Expr *exp) {
   switch (exp->as.binary.op) {
-    case '+':
+    case PLUS:
       return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
-    case '-':
+    case MINUS:
       return interpret(exp->as.binary.left) - interpret(exp->as.binary.right);
-    case '*':
+    case STAR:
       return interpret(exp->as.binary.left) * interpret(exp->as.binary.right);
-    case '/':
+    case FORWARD_SLASH:
       return interpret(exp->as.binary.left) / interpret(exp->as.binary.right);
-    case '%':
+    case MODULO:
       return (int)interpret(exp->as.binary.left) % (int)interpret(exp->as.binary.right);
   }
 }

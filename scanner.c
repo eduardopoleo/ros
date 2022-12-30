@@ -8,7 +8,7 @@ void initScanner(Scanner *scanner, char *code) {
   scanner->start = code;
   scanner->current = code;
   scanner->line = 1;
-  Token token = nextToken(scanner);
+  Token token = initToken(scanner);
   scanner->peek = token;
 }
 
@@ -22,7 +22,7 @@ Token newToken(TokenType type, int line, int length, char *lexeme) {
   return token;
 }
 
-Token nextToken(Scanner *scanner) {
+Token initToken(Scanner *scanner) {
   Token token = calculateToken(scanner);
   scanner->peek = token;
   return token;

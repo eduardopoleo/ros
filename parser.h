@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "scanner.h"
+#include "token.h"
 
 typedef enum ExprType {
   BINARY,
@@ -16,7 +17,7 @@ typedef struct Expr {
     struct {
       struct Expr *left;
       struct Expr *right;
-      char op;
+      TokenType op;
     } binary;
 
     struct {
@@ -30,7 +31,7 @@ Expr *term(Scanner *scanner);
 Expr *factor(Scanner *scanner);
 Expr *primary(Scanner *scanner);
 Expr *newExpr(int line, ExprType type);
-Expr *newBinary(Expr *left, Expr *right, char op, int line);
+Expr *newBinary(Expr *left, Expr *right, TokenType op, int line);
 Expr *newNumberLiteral(Token *token);
 
 #endif
