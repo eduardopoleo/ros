@@ -8,6 +8,8 @@ void initScanner(Scanner *scanner, char *code) {
   scanner->start = code;
   scanner->current = code;
   scanner->line = 1;
+  Token token = nextToken(scanner);
+  scanner->peek = token;
 }
 
 Token newToken(TokenType type, int line, int length, char *lexeme) {
@@ -22,8 +24,17 @@ Token newToken(TokenType type, int line, int length, char *lexeme) {
 
 Token nextToken(Scanner *scanner) {
   Token token = calculateToken(scanner);
-  scanner->peek = &token;
+  scanner->peek = token;
   return token;
+}
+
+// Advances the token but returns the previously current token
+Token advanceToken(Scanner *scanner) {
+  Token prev = scanner->peek;
+  Token token = calculateToken(scanner); 
+  scanner->peek = token;
+  scanner->peek_prev = prev;
+  return prev;
 }
 
 bool atEnd(Scanner *scanner) {
@@ -99,9 +110,9 @@ bool isNumber(char c) {
 }
 
 bool match(Scanner *scanner, char character) {
-  if (scanner->current[0] == character) {
-    Token token = calculateToken(scanner);
-    scanner->peek = &token;
+  if (scanner->peek.lexeme[0] == character) {
+    printf("got here!\n");
+    advanceToken(scanner);
     return true;
   }
 

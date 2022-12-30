@@ -7,7 +7,6 @@ Expr *parse(Scanner *scanner) {
   Expr *exp;
   // TODO: pay attention to this when we have multi line statements.
   while(!atEnd(scanner)) {
-    printf("scanner loop\n");
     exp = term(scanner);
   }
 
@@ -18,7 +17,7 @@ Expr *parse(Scanner *scanner) {
 Expr *term(Scanner *scanner) {
   Expr *exp = factor(scanner);
   while(match(scanner, '+') || match(scanner, '-')) {
-    char op = scanner->peek->lexeme[0];
+    char op = scanner->peek_prev.lexeme[0];
     exp = newBinary(exp, factor(scanner), op, scanner->line);
   }
   return exp;
@@ -28,7 +27,7 @@ Expr *term(Scanner *scanner) {
 Expr *factor(Scanner *scanner) {
   Expr *exp = primary(scanner);
   while(match(scanner, '*') || match(scanner, '/') || match(scanner, '%')) {
-    char op = scanner->peek->lexeme[0];
+    char op = scanner->peek_prev.lexeme[0];
     exp = newBinary(exp, primary(scanner), op, scanner->line);
   }
 
@@ -38,7 +37,7 @@ Expr *factor(Scanner *scanner) {
 // primary -> NUMBER
 Expr *primary(Scanner *scanner) {
   // For now only numbers
-  Token token = nextToken(scanner);
+  Token token = advanceToken(scanner);
   Expr *exp = newNumberLiteral(&token);
   return exp;
 }
