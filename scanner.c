@@ -84,6 +84,7 @@ Token calculateToken(Scanner *scanner) {
       token = newToken(MODULO, scanner->line, 1, scanner->start);
       break;
     case '\0':
+      printf("Got to the end of file\n");
       token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
       break;
   }
@@ -94,7 +95,10 @@ Token calculateToken(Scanner *scanner) {
     token = newToken(NUMBER, scanner->line, length, scanner->start);
   }
 
-  scanner->start = scanner->current;
+  if (!atEnd(scanner)) {
+    scanner->start = scanner->current;
+  }
+
   return token;
 }
 
