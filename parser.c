@@ -16,7 +16,6 @@ Expr *parse(Scanner *scanner) {
 
 // term -> factor ((+|-) factor)*
 Expr *term(Scanner *scanner) {
-  printf("hit term!\n");
   Expr *exp = factor(scanner);
   while(match(scanner, PLUS) || match(scanner, MINUS)) {
     TokenType op = scanner->peek_prev.type;
@@ -63,7 +62,6 @@ Expr *newBinary(Expr *left, Expr *right, TokenType op, int line) {
 }
 
 Expr *newNumberLiteral(Token *token) {
-  printf("Number literal\n");
   Expr *exp = newExpr(token->line, NUMBER_LITERAL);
   double number = strtod(token->lexeme, NULL);
   exp->as.numberLiteral.number = number;

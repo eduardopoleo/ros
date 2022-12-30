@@ -16,7 +16,7 @@
   - [x] ReadFile
   - [x] Blank spaces
   - [x] Multi line statement
-  - Comments
+  - [x] Comments
   - puts
   - Strings
   - Free ast

@@ -63,8 +63,8 @@ Token calculateToken(Scanner *scanner) {
     scanner->line++;
     /*
       After we're out of a comments we need to re check all the other
-      previous conditions again. This is not efficient but it's the
-      easisets way to get it done.
+      previous conditions again. This is not efficient because we're building
+      a recursive stack but whatever.
     */
     return calculateToken(scanner);
   }
