@@ -19,7 +19,7 @@ Token nextToken(Scanner *scanner);
 Token advanceToken(Scanner *scanner);
 Token calculateToken(Scanner *scanner);
 bool atEnd(Scanner *scanner);
-bool match(Scanner *scanner, char character);
+bool match(Scanner *scanner, TokenType type);
 bool isNumber(char c);
 void captureFullNumber(Scanner *scanner);
 void advance(Scanner *scanner);

@@ -16,7 +16,7 @@ Expr *parse(Scanner *scanner) {
 // term -> factor ((+|-) factor)*
 Expr *term(Scanner *scanner) {
   Expr *exp = factor(scanner);
-  while(match(scanner, '+') || match(scanner, '-')) {
+  while(match(scanner, PLUS) || match(scanner, MINUS)) {
     char op = scanner->peek_prev.lexeme[0];
     exp = newBinary(exp, factor(scanner), op, scanner->line);
   }
@@ -26,7 +26,7 @@ Expr *term(Scanner *scanner) {
 // factor -> primary ((*|/|%) primary)*
 Expr *factor(Scanner *scanner) {
   Expr *exp = primary(scanner);
-  while(match(scanner, '*') || match(scanner, '/') || match(scanner, '%')) {
+  while(match(scanner, STAR) || match(scanner, FORWARD_SLASH) || match(scanner, MODULO)) {
     char op = scanner->peek_prev.lexeme[0];
     exp = newBinary(exp, primary(scanner), op, scanner->line);
   }

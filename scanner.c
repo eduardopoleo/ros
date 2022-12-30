@@ -31,8 +31,7 @@ Token nextToken(Scanner *scanner) {
 // Advances the token but returns the previously current token
 Token advanceToken(Scanner *scanner) {
   Token prev = scanner->peek;
-  Token token = calculateToken(scanner); 
-  scanner->peek = token;
+  scanner->peek = calculateToken(scanner);
   scanner->peek_prev = prev;
   return prev;
 }
@@ -49,7 +48,6 @@ Token calculateToken(Scanner *scanner) {
   scanner->start = scanner->current;
   advance(scanner);
   while(scanner->start[0] == '\n') {
-    printf("got here\n");
     scanner->line++;
     scanner->start = scanner->current;
     advance(scanner);
@@ -58,26 +56,19 @@ Token calculateToken(Scanner *scanner) {
   char startChar = scanner->start[0];
 
   printf("start %c\n", startChar);
-  Token token;
   switch (startChar) {
     case '+':
-      token = newToken(PLUS, scanner->line, 1, scanner->start);
-      break;
+      return newToken(PLUS, scanner->line, 1, scanner->start);
     case '-':
-      token = newToken(MINUS, scanner->line, 1, scanner->start);
-      break;
+      return newToken(MINUS, scanner->line, 1, scanner->start);
     case '*':
-      token = newToken(STAR, scanner->line, 1, scanner->start);
-      break;
+      return newToken(STAR, scanner->line, 1, scanner->start);
     case '/':
-      token = newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
-      break;
+      return newToken(FORWARD_SLASH, scanner->line, 1, scanner->start);
     case '%':
-      token = newToken(MODULO, scanner->line, 1, scanner->start);
-      break;
+      return newToken(MODULO, scanner->line, 1, scanner->start);
     case '\0':
-      token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
-      break;
+      return newToken(END_OF_FILE, scanner->line, 1, scanner->start);
   }
 
   if(isNumber(startChar)) {
@@ -85,7 +76,7 @@ Token calculateToken(Scanner *scanner) {
   }
 
   int length = (int)(scanner->current - scanner->start);
-  token = newToken(NUMBER, scanner->line, length, scanner->start);
+  Token token = newToken(NUMBER, scanner->line, length, scanner->start);
 
   return token;
 }
@@ -109,9 +100,8 @@ bool isNumber(char c) {
   return false;
 }
 
-bool match(Scanner *scanner, char character) {
-  if (scanner->peek.lexeme[0] == character) {
-    printf("got here!\n");
+bool match(Scanner *scanner, TokenType type) {
+  if (scanner->peek.type == type) {
     advanceToken(scanner);
     return true;
   }
