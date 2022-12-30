@@ -16,6 +16,7 @@ typedef struct Scanner {
 void initScanner(Scanner *scanner, char *code);
 Token newToken(TokenType type, int line, int length, char *lexeme);
 Token initToken(Scanner *scanner);
+bool isWhiteSpace(char c);
 Token advanceToken(Scanner *scanner);
 Token calculateToken(Scanner *scanner);
 bool atEnd(Scanner *scanner);

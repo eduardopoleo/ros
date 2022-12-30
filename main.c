@@ -13,15 +13,16 @@
   - [x] Multiplication
   - [x] Division
   - [x] Module
-  - ReadFile
-  - Blank spaces
-  - Multi line statement
+  - [x] ReadFile
+  - [x] Blank spaces
+  - [x] Multi line statement
   - Comments
-  - Strings
-  - String interpolation ?
   - puts
+  - Strings
   - Free ast
   Stage 2:
+  - boolean related binary operation
+  - control flow
   - variables 
   - functions
   - closures (blocks)

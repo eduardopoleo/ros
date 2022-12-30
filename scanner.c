@@ -47,7 +47,7 @@ bool atEnd(Scanner *scanner) {
 Token calculateToken(Scanner *scanner) {
   scanner->start = scanner->current;
   advance(scanner);
-  while(scanner->start[0] == '\n') {
+  while(isWhiteSpace(scanner->start[0])) {
     scanner->line++;
     scanner->start = scanner->current;
     advance(scanner);
@@ -90,6 +90,14 @@ void captureFullNumber(Scanner *scanner) {
       advance(scanner);
     }
   }
+}
+
+bool isWhiteSpace(char c) {
+  if(c == '\n' || c == ' ' || c == '\t' || c == '\r') {
+    return true;
+  }
+
+  return false;
 }
 
 bool isNumber(char c) {
