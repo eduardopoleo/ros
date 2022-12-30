@@ -37,9 +37,17 @@ bool atEnd(Scanner *scanner) {
 Token calculateToken(Scanner *scanner) {
   scanner->start = scanner->current;
   advance(scanner);
-  Token token;
+  while(scanner->start[0] == '\n') {
+    printf("got here\n");
+    scanner->line++;
+    scanner->start = scanner->current;
+    advance(scanner);
+  }
+
   char startChar = scanner->start[0];
+
   printf("start %c\n", startChar);
+  Token token;
   switch (startChar) {
     case '+':
       token = newToken(PLUS, scanner->line, 1, scanner->start);
@@ -55,6 +63,9 @@ Token calculateToken(Scanner *scanner) {
       break;
     case '%':
       token = newToken(MODULO, scanner->line, 1, scanner->start);
+      break;
+    case '\0':
+      token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
       break;
   }
 
@@ -87,14 +98,14 @@ bool isNumber(char c) {
   return false;
 }
 
-int match(Scanner *scanner, char character) {
+bool match(Scanner *scanner, char character) {
   if (scanner->current[0] == character) {
     Token token = calculateToken(scanner);
     scanner->peek = &token;
-    return 1;
+    return true;
   }
 
-  return 0;
+  return false;
 }
 
 void advance(Scanner *scanner) {

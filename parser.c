@@ -3,11 +3,13 @@
 #include "parser.h"
 #include "scanner.h"
 
-Expr *newExpr(int line, ExprType type) {
-  Expr *exp = malloc(sizeof(*exp));
-
-  exp->line = line;
-  exp->type = type;
+Expr *parse(Scanner *scanner) {
+  Expr *exp;
+  // TODO: pay attention to this when we have multi line statements.
+  while(!atEnd(scanner)) {
+    printf("scanner loop\n");
+    exp = term(scanner);
+  }
 
   return exp;
 }
@@ -41,6 +43,15 @@ Expr *primary(Scanner *scanner) {
   return exp;
 }
 
+Expr *newExpr(int line, ExprType type) {
+  Expr *exp = malloc(sizeof(*exp));
+
+  exp->line = line;
+  exp->type = type;
+
+  return exp;
+}
+
 Expr *newBinary(Expr *left, Expr *right, char op, int line) {
   Expr *exp = newExpr(line, BINARY);
   exp->as.binary.left = left;
@@ -54,15 +65,5 @@ Expr *newNumberLiteral(Token *token) {
   Expr *exp = newExpr(token->line, NUMBER_LITERAL);
   double number = strtod(token->lexeme, NULL);
   exp->as.numberLiteral.number = number;
-  return exp;
-}
-
-Expr *parse(Scanner *scanner) {
-  Expr *exp;
-  // TODO: pay attention to this when we have multi line statements.
-  while(!atEnd(scanner)) {
-    exp = term(scanner);
-  }
-
   return exp;
 }
