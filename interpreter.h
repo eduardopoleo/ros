@@ -3,8 +3,14 @@
 
 #include "parser.h"
 
-double interpret(Expr *exp);
-double visitNumberLiteral(Expr *exp);
-double visitBinary(Expr *exp);
+typedef union Result {
+  double number;
+  char *string;
+} Result;
+
+Result interpret(Expr *exp);
+Result visitStringLiteral(Expr *exp);
+Result visitNumberLiteral(Expr *exp);
+Result visitBinary(Expr *exp);
 
 #endif

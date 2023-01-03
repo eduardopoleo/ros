@@ -5,30 +5,54 @@
 #include "stdlib.h"
 #include "string.h"
 
-double interpret(Expr *exp) {
+/*
+  I need create a generic object model that can be returned from the 
+  interpreter.The object model only gets translated into string when
+  print for instance. Most likely we'll be using the same UNION approach
+  from the expressions.
+*/
+
+Result interpret(Expr *exp) {
   switch (exp->type) {
     case BINARY:
       return visitBinary(exp);
     case NUMBER_LITERAL:
       return visitNumberLiteral(exp);
+    case STRING_LITERAL:
+      return visitStringLiteral(exp);
   }
 }
 
-double visitNumberLiteral(Expr *exp) {
-  return exp->as.numberLiteral.number;
+Result visitStringLiteral(Expr *exp) {
+  Result result;
+  result.string = exp->as.stringLiteral.string;
+  return result;
 }
 
-double visitBinary(Expr *exp) {
+Result visitNumberLiteral(Expr *exp) {
+  Result result;
+  result.number = exp->as.numberLiteral.number;
+  return result;
+}
+
+Result visitBinary(Expr *exp) {
+  Result result;
   switch (exp->as.binary.op) {
     case PLUS:
-      return interpret(exp->as.binary.left) + interpret(exp->as.binary.right);
+      result.number = interpret(exp->as.binary.left).number + interpret(exp->as.binary.right).number;
+      break;
     case MINUS:
-      return interpret(exp->as.binary.left) - interpret(exp->as.binary.right);
+      result.number = interpret(exp->as.binary.left).number - interpret(exp->as.binary.right).number;
+      break;
     case STAR:
-      return interpret(exp->as.binary.left) * interpret(exp->as.binary.right);
+      result.number = interpret(exp->as.binary.left).number * interpret(exp->as.binary.right).number;
+      break;
     case FORWARD_SLASH:
-      return interpret(exp->as.binary.left) / interpret(exp->as.binary.right);
+      result.number = interpret(exp->as.binary.left).number / interpret(exp->as.binary.right).number;
+      break;
     case MODULO:
-      return (int)interpret(exp->as.binary.left) % (int)interpret(exp->as.binary.right);
+      result.number = (int)interpret(exp->as.binary.left).number % (int)interpret(exp->as.binary.right).number;
+      break;
   }
+  return result;
 }

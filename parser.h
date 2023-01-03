@@ -7,7 +7,8 @@
 
 typedef enum ExprType {
   BINARY,
-  NUMBER_LITERAL
+  NUMBER_LITERAL,
+  STRING_LITERAL
 } ExprType;
 
 typedef struct Expr {
@@ -23,6 +24,10 @@ typedef struct Expr {
     struct {
       double number;
     } numberLiteral;
+
+    struct {
+      char *string;
+    } stringLiteral;
   } as;
 } Expr;
 

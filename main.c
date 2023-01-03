@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
   Scanner scanner;
   initScanner(&scanner, buffer);
   Expr *exp = parse(&scanner);
-  double result = interpret(exp);
+  Result result = interpret(exp);
 
-  printf("result %f", result);
+  printf("result %f", result.number);
   return 0;
 }
