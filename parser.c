@@ -7,7 +7,6 @@ Expr *parse(Scanner *scanner) {
   Expr *exp;
   // TODO: pay attention to this when we have multi line statements.
   while(!atEnd(scanner)) {
-    printf("in loop\n");
     exp = term(scanner);
   }
 
@@ -37,9 +36,16 @@ Expr *factor(Scanner *scanner) {
 
 // primary -> NUMBER
 Expr *primary(Scanner *scanner) {
-  // For now only numbers
   Token token = advanceToken(scanner);
-  Expr *exp = newNumberLiteral(&token);
+  Expr *exp;
+  switch (token.type){
+  case STRING:
+    exp = newStringLiteral(&token);
+    break;
+  case NUMBER:
+    exp = newNumberLiteral(&token);
+    break;
+  }
   return exp;
 }
 
@@ -67,3 +73,11 @@ Expr *newNumberLiteral(Token *token) {
   exp->as.numberLiteral.number = number;
   return exp;
 }
+
+Expr *newStringLiteral(Token *token) {
+  Expr *exp = newExpr(token->line, STRING_LITERAL);
+  exp->as.stringLiteral.string = token->lexeme;
+  exp->as.stringLiteral.length = token->length;
+  return exp;
+}
+

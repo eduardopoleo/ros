@@ -17,12 +17,13 @@
   - [x] Blank spaces
   - [x] Multi line statement
   - [x] Comments
-  - puts
   - Strings
+  - Multiple statements
+  - puts
   - Free ast
   Stage 2:
   - boolean related binary operation
-  - control flow
+  - control flow (if, for, while)
   - variables 
   - functions
   - closures (blocks)
@@ -39,6 +40,6 @@ int main(int argc, char *argv[]) {
   Expr *exp = parse(&scanner);
   Result result = interpret(exp);
 
-  printf("result %f", result.number);
+  printf("result %s", result.string);
   return 0;
 }

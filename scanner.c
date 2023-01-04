@@ -70,10 +70,9 @@ Token calculateToken(Scanner *scanner) {
   }
 
   scanner->current = scanner->start + 1;
-  char startChar = scanner->start[0];
   Token token;
-  printf("start %c\n", startChar);
-  switch (startChar) {
+  printf("start %c\n", scanner->start[0]);
+  switch (scanner->start[0]) {
     case '+':
       token = newToken(PLUS, scanner->line, 1, scanner->start);
       break;
@@ -90,12 +89,17 @@ Token calculateToken(Scanner *scanner) {
       token = newToken(MODULO, scanner->line, 1, scanner->start);
       break;
     case '\0':
-      printf("Got to the end of file\n");
       token = newToken(END_OF_FILE, scanner->line, 1, scanner->start);
       break;
   }
 
-  if(isNumber(startChar)) {
+  if (scanner->start[0] == '"') {
+    captureFullString(scanner);
+    int length = (int)(scanner->current - scanner->start);
+    token = newToken(STRING, scanner->line, length, scanner->start);
+  }
+
+  if(isNumber(scanner->start[0])) {
     captureFullNumber(scanner);
     int length = (int)(scanner->current - scanner->start);
     token = newToken(NUMBER, scanner->line, length, scanner->start);
@@ -116,6 +120,14 @@ void captureFullNumber(Scanner *scanner) {
       scanner->current++;
     }
   }
+}
+
+void captureFullString(Scanner *scanner) {
+  while(scanner->current[0] != '"') {
+    scanner->current++;
+  }
+  // Moves past the "
+  scanner->current++;
 }
 
 bool isNewLine(char c) {

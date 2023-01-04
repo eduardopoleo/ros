@@ -27,6 +27,7 @@ typedef struct Expr {
 
     struct {
       char *string;
+      int length;
     } stringLiteral;
   } as;
 } Expr;
@@ -38,5 +39,6 @@ Expr *primary(Scanner *scanner);
 Expr *newExpr(int line, ExprType type);
 Expr *newBinary(Expr *left, Expr *right, TokenType op, int line);
 Expr *newNumberLiteral(Token *token);
+Expr *newStringLiteral(Token *token);
 
 #endif
