@@ -51,5 +51,6 @@ Expr *newExpr(int line, ExprType type);
 Expr *newBinary(Expr *left, Expr *right, TokenType op, int line);
 Expr *newNumberLiteral(Token *token);
 Expr *newStringLiteral(Token *token);
+void freeExpression(Expr *exp);
 
 #endif

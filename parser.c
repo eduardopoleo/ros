@@ -82,7 +82,7 @@ Expr *primary(Scanner *scanner) {
 }
 
 Expr *newExpr(int line, ExprType type) {
-  Expr *exp = malloc(sizeof(*exp));
+  Expr *exp = (Expr*)malloc(sizeof(*exp));
 
   exp->line = line;
   exp->type = type;
@@ -111,4 +111,19 @@ Expr *newStringLiteral(Token *token) {
   exp->as.stringLiteral.string = token->lexeme;
   exp->as.stringLiteral.length = token->length;
   return exp;
+}
+
+void freeExpression(Expr *exp) {
+  switch (exp->type) {
+    case BINARY:
+      freeExpression(exp->as.binary.left);
+      freeExpression(exp->as.binary.right);
+      break;
+    case NUMBER_LITERAL:
+      free(exp);
+      break;
+    case STRING_LITERAL:
+      free(exp);
+      break;
+  }
 }

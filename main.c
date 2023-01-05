@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "scanner.h"
 #include "token.h"
 #include "parser.h"
@@ -18,7 +19,7 @@
   - [x] Multi line statement
   - [x] Comments
   - [x] Strings
-  - Multiple statements
+  - [x] Multiple statements
   - Free ast
   Stage 2:
   - puts
@@ -33,18 +34,24 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
-  // "8-3+71.8*5+14%5\0"
   char *buffer = readFile(argv[1]);
   Scanner scanner;
   initScanner(&scanner, buffer);
   ExprArray expArray = parse(&scanner);
 
-  // Make this to take an array of expression
   Result result;
   for (int i = 0; i < expArray.size; i++) {
     result = interpret(expArray.list[i]);
     printf("result %f\n", result.number);
   }
+
+  Expr *exp;
+  for (int i = 0; i < expArray.size; i++) {
+    exp = expArray.list[i];
+    freeExpression(exp);
+  }
+  free(expArray.list);
+  free(buffer);
 
   return 0;
 }
