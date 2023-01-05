@@ -17,11 +17,11 @@
   - [x] Blank spaces
   - [x] Multi line statement
   - [x] Comments
-  - Strings
+  - [x] Strings
   - Multiple statements
-  - puts
   - Free ast
   Stage 2:
+  - puts
   - boolean related binary operation
   - control flow (if, for, while)
   - variables 
@@ -37,9 +37,14 @@ int main(int argc, char *argv[]) {
   char *buffer = readFile(argv[1]);
   Scanner scanner;
   initScanner(&scanner, buffer);
-  Expr *exp = parse(&scanner);
-  Result result = interpret(exp);
+  ExprArray expArray = parse(&scanner);
 
-  printf("result %s", result.string);
+  // Make this to take an array of expression
+  Result result;
+  for (int i = 0; i < expArray.size; i++) {
+    result = interpret(expArray.list[i]);
+    printf("result %f\n", result.number);
+  }
+
   return 0;
 }

@@ -3,14 +3,46 @@
 #include "parser.h"
 #include "scanner.h"
 
-Expr *parse(Scanner *scanner) {
-  Expr *exp;
-  // TODO: pay attention to this when we have multi line statements.
-  while(!atEnd(scanner)) {
-    exp = term(scanner);
+// Maybe this should be 
+void initExpArray(ExprArray *array) {
+  array->list = NULL;
+  array->capacity = 0;
+  array->size = 0;
+}
+
+void writeExpArray(ExprArray *expArray, Expr *newExp) {
+  if (expArray->size + 1 > expArray->capacity) {
+    int newCapacity = growExpCapacity(expArray->capacity);
+    expArray->list = growExpArray(expArray, newCapacity);
   }
 
-  return exp;
+  expArray->list[expArray->size] = newExp;
+  expArray->size++;
+}
+
+int growExpCapacity(int capacity) {
+  if (capacity < 8) {
+    return 8;
+  } else {
+    return 2 * capacity;
+  }
+}
+
+Expr **growExpArray(ExprArray *array, int newCapacity) {
+  return (Expr**)realloc(array->list, newCapacity * sizeof(Expr));
+}
+
+ExprArray parse(Scanner *scanner) {
+  ExprArray expArray;
+  initExpArray(&expArray);
+
+  Expr *exp;
+  while(!atEnd(scanner)) {
+    exp = term(scanner);
+    writeExpArray(&expArray, exp);
+  }
+
+  return expArray;
 }
 
 // term -> factor ((+|-) factor)*
@@ -80,4 +112,3 @@ Expr *newStringLiteral(Token *token) {
   exp->as.stringLiteral.length = token->length;
   return exp;
 }
-

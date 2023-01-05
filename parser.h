@@ -32,7 +32,18 @@ typedef struct Expr {
   } as;
 } Expr;
 
-Expr *parse(Scanner *scanner);
+typedef struct ExprArray {
+  Expr **list;
+  int size;
+  int capacity;
+} ExprArray;
+
+void initExpArray(ExprArray *array);
+void writeExpArray(ExprArray *expArray, Expr *newExp);
+int growExpCapacity(int capacity);
+Expr **growExpArray(ExprArray *array, int newCapacity);
+
+ExprArray parse(Scanner *scanner);
 Expr *term(Scanner *scanner);
 Expr *factor(Scanner *scanner);
 Expr *primary(Scanner *scanner);

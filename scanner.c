@@ -71,7 +71,6 @@ Token calculateToken(Scanner *scanner) {
 
   scanner->current = scanner->start + 1;
   Token token;
-  printf("start %c\n", scanner->start[0]);
   switch (scanner->start[0]) {
     case '+':
       token = newToken(PLUS, scanner->line, 1, scanner->start);
