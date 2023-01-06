@@ -32,25 +32,46 @@ typedef struct Expr {
   } as;
 } Expr;
 
-typedef struct ExprArray {
-  Expr **list;
+typedef enum StmtType {
+  PUTS_STMT,
+  EXPR_STMT
+} StmtType;
+
+typedef struct Stmt {
+  StmtType type;
+  int line;
+  union {
+    struct {
+      Expr *exp;
+    } puts;
+  } as;
+  Expr *exprStmt;
+} Stmt;
+
+typedef struct StmtArray {
+  Stmt **list;
   int size;
   int capacity;
-} ExprArray;
+} StmtArray;
 
-void initExpArray(ExprArray *array);
-void writeExpArray(ExprArray *expArray, Expr *newExp);
-int growExpCapacity(int capacity);
-Expr **growExpArray(ExprArray *array, int newCapacity);
+void initStmtArray(StmtArray *array);
+void writeStmtArray(StmtArray *array, Stmt *stmt);
+int growStmtCapacity(int capacity);
+Stmt **growStmtArray(StmtArray *array, int newCapacity);
 
-ExprArray parse(Scanner *scanner);
+StmtArray parse(Scanner *scanner);
+Stmt *statement(Scanner *scanner);
+Expr *expression(Scanner *scanner);
 Expr *term(Scanner *scanner);
 Expr *factor(Scanner *scanner);
 Expr *primary(Scanner *scanner);
 Expr *newExpr(int line, ExprType type);
+Stmt *newStmt(int line, StmtType type);
+Stmt *newPuts(int line, Expr *exp);
 Expr *newBinary(Expr *left, Expr *right, TokenType op, int line);
 Expr *newNumberLiteral(Token *token);
 Expr *newStringLiteral(Token *token);
+void freeStatements(StmtArray *array);
+void freeStatement(Stmt *stmt);
 void freeExpression(Expr *exp);
-
 #endif

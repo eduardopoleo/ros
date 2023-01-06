@@ -3,12 +3,29 @@
 
 #include "parser.h"
 
-typedef union Result {
-  double number;
-  char *string;
+typedef enum ResultType {
+  NUMBER_RESULT,
+  STRING_RESULT
+} ResultType;
+
+typedef struct Result {
+  ResultType type;
+  union {
+    struct {
+      double value;
+    } number;
+
+    struct {
+      int length;
+      char *value;
+    } string;
+  } as;
 } Result;
 
-Result interpret(Expr *exp);
+void interpret(StmtArray *array);
+void execute(Stmt *stmt);
+void visitPuts(Stmt *stmt);
+Result evaluate(Expr *exp);
 Result visitStringLiteral(Expr *exp);
 Result visitNumberLiteral(Expr *exp);
 Result visitBinary(Expr *exp);

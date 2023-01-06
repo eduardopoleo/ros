@@ -20,9 +20,9 @@
   - [x] Comments
   - [x] Strings
   - [x] Multiple statements
-  - Free ast
+  - [x] Free objects: ast, dynamic arrays
   Stage 2:
-  - puts
+  - [x] puts
   - boolean related binary operation
   - control flow (if, for, while)
   - variables 
@@ -34,23 +34,18 @@
   - classes (optional)
 */
 int main(int argc, char *argv[]) {
+  // Prep
   char *buffer = readFile(argv[1]);
   Scanner scanner;
+
+  // Interpret program
   initScanner(&scanner, buffer);
-  ExprArray expArray = parse(&scanner);
+  StmtArray statements = parse(&scanner);
+  interpret(&statements);
 
-  Result result;
-  for (int i = 0; i < expArray.size; i++) {
-    result = interpret(expArray.list[i]);
-    printf("result %f\n", result.number);
-  }
-
-  Expr *exp;
-  for (int i = 0; i < expArray.size; i++) {
-    exp = expArray.list[i];
-    freeExpression(exp);
-  }
-  free(expArray.list);
+  // Free all objects
+  freeStatements(&statements);
+  free(statements.list);
   free(buffer);
 
   return 0;

@@ -11,7 +11,9 @@ typedef enum TokenType {
   STAR, // 4
   FORWARD_SLASH, // 5
   MODULO, // 6
-  END_OF_FILE // 7
+  END_OF_FILE, // 7
+  PUTS, //8
+  IDENTIFIER // 9
 } TokenType;
 
 typedef struct Token {
