@@ -98,6 +98,20 @@ Token calculateToken(Scanner *scanner) {
     token = newToken(STRING, scanner->line, length, scanner->start);
   }
 
+  if (isAlpha(scanner->start[0])) {
+    captureFullIdentifier(scanner);
+    int length = (int)(scanner->current - scanner->start);
+    // set a pointer to the beginning of the array and name it keyword
+    // add 1 ++ till the end cuz we have the sentinel.
+    for(Keyword *keyword = keywords; keyword->name != NULL; keyword++) {
+      if ((keyword->length == length) && memcmp(scanner->start, keyword->name, length) == 0) {
+        token = newToken(keyword->type, scanner->line, length, scanner->start);
+      }
+    }
+    // Need to make this conditional here
+    // token = newToken(IDENTIFIER, scanner->line, length, scanner->start);
+  }
+
   if(isNumber(scanner->start[0])) {
     captureFullNumber(scanner);
     int length = (int)(scanner->current - scanner->start);
@@ -108,6 +122,12 @@ Token calculateToken(Scanner *scanner) {
     scanner->start = scanner->current;
   }
   return token;
+}
+
+void captureFullIdentifier(Scanner *scanner) {
+  while(isAllowedIdentifier(scanner->current[0])) {
+    scanner->current++;
+  }
 }
 
 void captureFullNumber(Scanner *scanner) {
@@ -145,12 +165,16 @@ bool isWhiteSpace(char c) {
   return false;
 }
 
-bool isNumber(char c) {
-  if(c >= '0' && c <= '9') {
-    return true;
-  }
+bool isAllowedIdentifier(char c) {
+  return isAlpha(c) || isNumber(c) || c == '_';
+}
 
-  return false;
+bool isNumber(char c) {
+  return c >= '0' && c <= '9';
+}
+
+bool isAlpha(char c) {
+  return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 
 bool match(Scanner *scanner, TokenType type) {
@@ -162,6 +186,9 @@ bool match(Scanner *scanner, TokenType type) {
   return false;
 }
 
-void printCurrentChar(Scanner *scanner, char *message) {
-  printf("%s: %c\n", message, scanner->start[0]);
+void printIdentifier(char *identifier, int lenght) {
+  for(int i = 0; i < lenght; i++) {
+    printf("%c", identifier[i]);
+  }
+  printf("\n");
 }

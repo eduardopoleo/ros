@@ -3,46 +3,32 @@
 #include "parser.h"
 #include "scanner.h"
 
-// Maybe this should be 
-void initExpArray(ExprArray *array) {
-  array->list = NULL;
-  array->capacity = 0;
-  array->size = 0;
-}
+StmtArray parse(Scanner *scanner) {
+  StmtArray stmtpArray;
+  initStmtArray(&stmtpArray);
 
-void writeExpArray(ExprArray *expArray, Expr *newExp) {
-  if (expArray->size + 1 > expArray->capacity) {
-    int newCapacity = growExpCapacity(expArray->capacity);
-    expArray->list = growExpArray(expArray, newCapacity);
-  }
-
-  expArray->list[expArray->size] = newExp;
-  expArray->size++;
-}
-
-int growExpCapacity(int capacity) {
-  if (capacity < 8) {
-    return 8;
-  } else {
-    return 2 * capacity;
-  }
-}
-
-Expr **growExpArray(ExprArray *array, int newCapacity) {
-  return (Expr**)realloc(array->list, newCapacity * sizeof(Expr));
-}
-
-ExprArray parse(Scanner *scanner) {
-  ExprArray expArray;
-  initExpArray(&expArray);
-
-  Expr *exp;
+  Stmt *stmt;
   while(!atEnd(scanner)) {
-    exp = term(scanner);
-    writeExpArray(&expArray, exp);
+    stmt = statement(scanner);
+    writeStmtArray(&stmtpArray, stmt);
   }
 
-  return expArray;
+  return stmtpArray;
+}
+
+Stmt *statement(Scanner *scanner) {
+  if(match(scanner, PUTS)) {
+    Expr *exp = expression(scanner);
+    return newPuts(scanner->line, exp);
+  } else {
+    Stmt *stmt = newStmt(scanner->line, EXPR_STMT);
+    stmt->exprStmt = expression(scanner);
+    return stmt;
+  }
+}
+
+Expr *expression(Scanner *scanner) {
+  return term(scanner);
 }
 
 // term -> factor ((+|-) factor)*
@@ -81,13 +67,11 @@ Expr *primary(Scanner *scanner) {
   return exp;
 }
 
-Expr *newExpr(int line, ExprType type) {
-  Expr *exp = (Expr*)malloc(sizeof(*exp));
-
-  exp->line = line;
-  exp->type = type;
-
-  return exp;
+// Supporting functions: Should go into another file
+Stmt *newPuts(int line, Expr *exp) {
+  Stmt *stmt = newStmt(line, PUTS_STMT);
+  stmt->as.puts.exp = exp;
+  return stmt;
 }
 
 Expr *newBinary(Expr *left, Expr *right, TokenType op, int line) {
@@ -95,7 +79,6 @@ Expr *newBinary(Expr *left, Expr *right, TokenType op, int line) {
   exp->as.binary.left = left;
   exp->as.binary.right = right;
   exp->as.binary.op = op;
-
   return exp;
 }
 
@@ -110,7 +93,42 @@ Expr *newStringLiteral(Token *token) {
   Expr *exp = newExpr(token->line, STRING_LITERAL);
   exp->as.stringLiteral.string = token->lexeme;
   exp->as.stringLiteral.length = token->length;
+
   return exp;
+}
+
+Stmt *newStmt(int line, StmtType type) {
+  Stmt *stmt = (Stmt*)malloc(sizeof(*stmt));
+  stmt->line = line;
+  stmt->type = type;
+  return stmt;
+}
+
+Expr *newExpr(int line, ExprType type) {
+  Expr *exp = (Expr*)malloc(sizeof(*exp));
+
+  exp->line = line;
+  exp->type = type;
+
+  return exp;
+}
+
+void freeStatements(StmtArray *array) {
+  for(int i = 0; i < array->size; i++) {
+    freeStatement(array->list[i]);
+  }
+}
+
+void freeStatement(Stmt *stmt) {
+  switch (stmt->type) {
+    case PUTS_STMT:
+      freeExpression(stmt->as.puts.exp);
+      free(stmt);
+      break;
+    case EXPR_STMT:
+      freeExpression(stmt->exprStmt);
+      break;
+  }
 }
 
 void freeExpression(Expr *exp) {
@@ -127,3 +145,33 @@ void freeExpression(Expr *exp) {
       break;
   }
 }
+
+////////////// STMT ARRAY ////////////////////
+void initStmtArray(StmtArray *array) {
+  array->list = NULL;
+  array->capacity = 0;
+  array->size = 0;
+}
+
+void writeStmtArray(StmtArray *array, Stmt *stmt) {
+  if (array->size + 1 > array->capacity) {
+    int newCapacity = growStmtCapacity(array->capacity);
+    array->list = growStmtArray(array, newCapacity);
+  }
+
+  array->list[array->size] = stmt;
+  array->size++;
+}
+
+int growStmtCapacity(int capacity) {
+  if (capacity < 8) {
+    return 8;
+  } else {
+    return 2 * capacity;
+  }
+}
+
+Stmt **growStmtArray(StmtArray *array, int newCapacity) {
+  return (Stmt**)realloc(array->list, newCapacity * sizeof(Stmt));
+}
+//////////////////////////////////////////////
